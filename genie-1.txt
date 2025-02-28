@@ -1,0 +1,110 @@
+We'll manage rainfall records as a vector of tuples or a struct containing city names, dates, and rainfall amounts. Since vectors don't inherently organize data by keys like maps, we'll have to iterate through the entire vector to calculate averages, which is less efficient but meets the requirement.
+
+### Step 1: Define the `Date` and `RainfallRecord` Classes
+
+First, let's redefine the `Date` class and introduce a `RainfallRecord` struct to hold each record.
+
+```cpp
+class Date {
+public:
+   int year, month, day;
+
+   Date(int y, int m, int d) : year(y), month(m), day(d) {}
+
+   // Function to display date in YYYY-MM-DD format (for debugging)
+   void display() const {
+       printf("%04d-%02d-%02d", year, month, day);
+   }
+
+   bool operator==(const Date& other) const {
+       return year == other.year && month == other.month && day == other.day;
+   }
+};
+
+struct RainfallRecord {
+   std::string city;
+   Date date;
+   double rainfall;
+
+   RainfallRecord(std::string c, Date d, double r) : city(std::move(c)), date(d), rainfall(r) {}
+};
+```
+
+### Step 2: Redefine the `Rainfall` Class to Use Vectors
+
+```cpp
+#include <vector>
+#include <string>
+#include <iostream>
+
+class Rainfall {
+   std::vector<RainfallRecord> records;
+
+public:
+   // Adds rainfall data
+   void addRainfall(const std::string& city, const Date& date, double rainfall) {
+       records.emplace_back(city, date, rainfall);
+   }
+
+   // Calculates average rainfall for a city
+   double calculateAverage(const std::string& city) {
+       double totalRainfall = 0.0;
+       int count = 0;
+
+       for (const auto& record : records) {
+           if (record.city == city) {
+               totalRainfall += record.rainfall;
+               ++count;
+           }
+       }
+
+       return count > 0 ? totalRainfall / count : 0.0;
+   }
+};
+```
+
+### Step 3: Test Program
+
+The test program will be similar to the previous version but adapted to the new structure.
+
+```cpp
+#include <iostream>
+#include <sstream>
+
+int main() {
+   Rainfall rainfallData;
+
+   // Simulated input data
+   std::string inputData = "New York,2023-01-01,5.2\n"
+                           "Los Angeles,2023-01-01,7.4\n"
+                           "New York,2023-01-02,6.1\n"
+                           "Los Angeles,2023-01-02,4.3\n";
+   std::istringstream iss(inputData);
+   std::string city, dateStr, line;
+   double rainfall;
+   int y, m, d;
+
+   // Read input data
+   while (std::getline(iss, line)) {
+       std::istringstream lineStream(line);
+       std::getline(lineStream, city, ',');
+       std::getline(lineStream, dateStr, ',');
+       sscanf(dateStr.c_str(), "%d-%d-%d", &y, &m, &d);
+       Date date(y, m, d);
+       lineStream >> rainfall;
+
+       rainfallData.addRainfall(city, date, rainfall);
+   }
+
+   // Calculate and print average rainfall for each city
+   std::cout << "Average Rainfall for New York: " << rainfallData.calculateAverage("New York") << std::endl;
+   std::cout << "Average Rainfall for Los Angeles: " << rainfallData.calculateAverage("Los Angeles") << std::endl;
+
+   return 0;
+}
+```
+
+### Notes:
+- This implementation is less efficient than using maps because it requires iterating through the entire vector to find records for a specific city. This might not be noticeable for small datasets but can become significant with larger ones.
+- The `Date` class now includes a simple equality comparison operator, which is necessary for comparing dates if needed in more complex operations.
+- This approach is more straightforward in terms of understanding how data is stored and iterated over, making it suitable for educational purposes or when working with small datasets.

@@ -1,0 +1,20 @@
+New York,2023-01-01,3.2
+Los Angeles,2023-01-01,2.4
+Chicago,2023-01-01,1.8
+Houston,2023-01-01,3.6
+Phoenix,2023-01-01,0.9
+Philadelphia,2023-01-01,2.9
+San Antonio,2023-01-01,1.4
+San Diego,2023-01-01,1.8
+Dallas,2023-01-01,2.2
+San Jose,2023-01-01,2.5
+New York,2023-02-01,2.8
+Los Angeles,2023-02-01,3.1
+Chicago,2023-02-01,1.2
+Houston,2023-02-01,3.3
+Phoenix,2023-02-01,0.7
+Philadelphia,2023-02-01,2.5
+San Antonio,2023-02-01,1.9
+San Diego,2023-02-01,1.6
+Dallas,2023-02-01,3.0
+San Jose,2023-02-01,2.7
